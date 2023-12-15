@@ -1,0 +1,68 @@
+#apiVersion: apps/v1
+#kind: Deployment
+#metadata:
+#  name: kbt1-ollilove-transfer-service
+#  labels:
+#    app: kbt1-ollilove-transfer-service
+#spec:
+#  selector:
+#    matchLabels:
+#      app: kbt1-ollilove-transfer-service
+#  replicas: 1
+#  template:
+#    metadata:
+#      name: kbt1-ollilove-transfer-service
+#      labels:
+#        app: kbt1-ollilove-transfer-service
+#    spec:
+#      containers:
+#        - name: kbt1-ollilove-transfer-service
+#          image: docker.io/gyuminn/kbt1-ollilove-transfer-service:1.0.0
+#          imagePullPolicy: Always
+#          env:
+#            - name: PORT
+#              value: "8080"
+#          ports:
+#            - name: port1
+#              containerPort: 8081
+#          resources:
+#            requests:
+#              cpu: 500m
+#              memory: 512Mi
+#            limits:
+#              cpu: 500m
+#              memory: 1024Mi
+#---
+#apiVersion: v1
+#kind: Service
+#metadata:
+#  name: kbt1-ollilove-transfer-service
+#spec:
+#  type: ClusterIP
+#  selector:
+#    app: kbt1-ollilove-transfer-service
+#  ports:
+#    - name: kbt1-ollilove-transfer-service
+#      port: 8080
+#      targetPort: 8080
+#---
+#apiVersion: networking.k8s.io/v1
+#kind: Ingress
+#metadata:
+#  name: kbt1-ollilove-service
+#  annotations:
+#    nginx.ingress.kubernetes.io/rewrite-target: /$1
+#    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+#spec:
+#  ingressClassName: nginx
+#  rules:
+#    - host: kbt1-ollilove-service.165.192.105.60.nip.io
+#      http:
+#        paths:
+#          - path: /(.*)
+#            pathType: Prefix
+#            backend:
+#              service:
+#                name: kbt1-ollilove-transfer-service
+#                port:
+#                  number: 8080
