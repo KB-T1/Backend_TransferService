@@ -1,9 +1,34 @@
+#local, dev ?? ???? ?? ?
+server:
+  port: ${PORT:8080}
+  servlet:
+    context-path: ${SERVLET_CONTEXT_PATH:/}
+
+spring:
+  config:
+    activate:
+      on-profile: local
+
+
+
+  datasource:
+    username: root
+    password: rlatp1409
+    url: jdbc:mysql://localhost:3306/sys?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Seoul
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+
+---
+
 server:
   port: ${PORT:18081}
   servlet:
     context-path: ${SERVLET_CONTEXT_PATH:/}
 
 spring:
+  config:
+    activate:
+      on-profile: dev
   application:
     name: Backend_UserService
 
@@ -24,7 +49,7 @@ spring:
     open-in-view: false
     show-sql: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: validate
       format_sql: true
 
 logging:
