@@ -5,9 +5,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/transfer")
+@RequestMapping("/message")
 @RequiredArgsConstructor
-public class transferController {
+public class MessageController {
 
 
 }

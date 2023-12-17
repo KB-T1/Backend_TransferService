@@ -14,7 +14,7 @@ spring:
   datasource:
     username: root
     password: rlatp1409
-    url: jdbc:mysql://localhost:3306/sys?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Seoul
+    url: jdbc:mysql://localhost:3306/kbt1?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Seoul
     driver-class-name: com.mysql.cj.jdbc.Driver
 
 
