@@ -40,3 +40,7 @@ tasks.named('bootBuildImage') {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+bootJar {
+	archiveFileName = 'kbt1-ollilove-transfer-service.jar'
+}
