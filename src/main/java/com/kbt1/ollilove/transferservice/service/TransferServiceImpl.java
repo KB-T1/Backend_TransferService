@@ -2,7 +2,6 @@ package com.kbt1.ollilove.transferservice.service;
 
 import com.kbt1.ollilove.transferservice.domain.Transfer;
 import com.kbt1.ollilove.transferservice.dto.TransferDTO;
-import com.kbt1.ollilove.transferservice.dto.TransferHistoryDTO;
 import com.kbt1.ollilove.transferservice.repository.TransferRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

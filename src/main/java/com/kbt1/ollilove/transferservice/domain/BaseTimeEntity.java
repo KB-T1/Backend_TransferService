@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 // Entity 변화 감시
 @EntityListeners(value = {AuditingEntityListener.class})
 @Getter
-public class BaseEntity {
+public class BaseTimeEntity {
     @CreatedDate
     @Column(name="created_at", updatable = false)
     private LocalDateTime regDate;

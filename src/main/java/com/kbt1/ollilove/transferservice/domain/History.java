@@ -6,14 +6,14 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name="message")
+@Table(name="history")
 @Getter
 @Setter
 @NoArgsConstructor
-public class Message extends BaseEntity {
+public class History extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private Long messageId;
+    private Long historyId;
 
     @Column(name="sender_id")
     private Long senderId;
@@ -24,6 +24,10 @@ public class Message extends BaseEntity {
     @Column(name="video_url")
     private String videoUrl;
 
-    @Column(name="transfer_id")
-    private String transferId;
+    @Column(name="is_reply", columnDefinition = "tinyInt(1)")
+    private Boolean isReply;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "transfer_id",nullable = false)
+    private Transfer transferId;
 }

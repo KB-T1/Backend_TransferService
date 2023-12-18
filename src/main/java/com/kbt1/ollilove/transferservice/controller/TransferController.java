@@ -1,15 +1,12 @@
 package com.kbt1.ollilove.transferservice.controller;
 
 
-import com.kbt1.ollilove.transferservice.domain.Message;
 import com.kbt1.ollilove.transferservice.domain.Transfer;
 import com.kbt1.ollilove.transferservice.dto.TransferDTO;
-import com.kbt1.ollilove.transferservice.dto.TransferHistoryDTO;
 import com.kbt1.ollilove.transferservice.service.TransferService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +15,7 @@ import java.util.List;
 
 
 @Controller
-@RequestMapping("/api/transfer")
+@RequestMapping("/transfer-api/transfer")
 @RequiredArgsConstructor
 @Tag(name="Transfer", description = "송금 API")
 public class TransferController {
