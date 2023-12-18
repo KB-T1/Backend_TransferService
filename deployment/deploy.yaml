@@ -21,7 +21,7 @@ spec:
           imagePullPolicy: Always
           env:
             - name: PORT
-              value: "8081"
+              value: "8080"
           envFrom:
             - configMapRef:
                 name: kbt1-ollilove-transfer-service-cm
