@@ -25,15 +25,18 @@ public class AccountController {
         try {
             accountResponseDTO = accountService.createNewAccount(accountRequestDTO.getUserId());
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("error");
+            return ResponseEntity.badRequest().body("sql error");
         }
         return ResponseEntity.ok(accountResponseDTO);
     }
 
     //내 계좌정보 가져오기
-    @GetMapping("/info")
-    public ResponseEntity<AccountResponseDTO> getMyAccountInfo() {
-        AccountResponseDTO accountResponseDTO = new AccountResponseDTO();
+    @GetMapping("/my")
+    @Operation(summary="계좌 정보 조회")
+    public ResponseEntity<AccountResponseDTO> getMyAccountInfo(@RequestParam Long userId) {
+        AccountResponseDTO accountResponseDTO;
+        accountResponseDTO = accountService.getAccountInfo(userId);
         return ResponseEntity.ok(accountResponseDTO);
     }
+
 }

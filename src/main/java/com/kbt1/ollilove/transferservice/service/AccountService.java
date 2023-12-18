@@ -4,5 +4,5 @@ import com.kbt1.ollilove.transferservice.dto.AccountResponseDTO;
 
 public interface AccountService {
     AccountResponseDTO createNewAccount (Long userId);
-
+    AccountResponseDTO getAccountInfo(Long userId);
 }
