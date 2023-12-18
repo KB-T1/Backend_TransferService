@@ -45,7 +45,7 @@ apiVersion: v1
 metadata:
   name: kbt1-ollilove-transfer-service-cm
 data:
-  DB_SERVER: mysql
+  DB_SERVER: kbt1-ollilove-mysql
   DB_PORT: "3306"
   DB_NAME: "kbt1"
 
