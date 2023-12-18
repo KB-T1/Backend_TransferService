@@ -2,13 +2,12 @@ package com.kbt1.ollilove.transferservice.controller;
 
 import com.kbt1.ollilove.transferservice.dto.AccountResponseDTO;
 import com.kbt1.ollilove.transferservice.service.AccountService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/transfer-api/account")
@@ -19,12 +18,19 @@ public class AccountController {
     private final AccountService accountService;
 
     @PostMapping("/new")
-    public ResponseEntity<AccountResponseDTO> createNewAccount() {
-        AccountResponseDTO accountResponseDTO = new AccountResponseDTO();
+    @Operation(summary="신규 계좌번호 생성")
+    public ResponseEntity createNewAccount(@RequestParam Long userId) {
+        AccountResponseDTO accountResponseDTO;
+        try {
+            accountResponseDTO = accountService.createNewAccount(userId);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("error");
+        }
         return ResponseEntity.ok(accountResponseDTO);
     }
 
-    @GetMapping("/my")
+    //내 계좌정보 가져오기
+    @GetMapping("/info")
     public ResponseEntity<AccountResponseDTO> getMyAccountInfo() {
         AccountResponseDTO accountResponseDTO = new AccountResponseDTO();
         return ResponseEntity.ok(accountResponseDTO);
