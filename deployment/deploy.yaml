@@ -86,17 +86,10 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-    - host: kbt1-ollilove-service.165.192.105.60.nip.io
+    - host: kbt1-ollilove-transfer-api.165.192.105.60.nip.io
       http:
         paths:
-          - path: /user/(.*)
-            pathType: Prefix
-            backend:
-              service:
-                name: kbt1-ollilove-user-service
-                port:
-                  number: 8080
-          - path: /transfer/(.*)
+          - path: /(.*)
             pathType: Prefix
             backend:
               service:
