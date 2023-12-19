@@ -22,8 +22,34 @@ public class HistoryController {
 
     @GetMapping("")
     @Operation(summary = "마음 주고받은 내역 보기")
-    public ResponseEntity<List<HistoryResponseDTO>> getHistoryAllByUserId (@RequestParam("userId") Long userId, @RequestParam("count") int count) {
-        List<HistoryResponseDTO> resData = historyService.getHistoryByUserIdAndCount(userId, count);
+    public ResponseEntity<List<HistoryResponseDTO>> getHistoryListByUserId(@RequestParam("userId") Long userId, @RequestParam(value = "count", required = false) Long count) {
+        List<HistoryResponseDTO> resData;
+        if (count == null) {
+            //값이 있는 경우
+            resData = historyService.getHistoryListByUserIdAndCount(userId);
+        } else {
+            //값이 비어있는 경우
+            resData = historyService.getHistoryListByUserIdAndCount(userId, count);
+        }
+
         return ResponseEntity.ok(resData);
     }
+
+    @GetMapping("/with")
+    @Operation(summary = "마음 주고받은 내역 보기")
+    public ResponseEntity<List<HistoryResponseDTO>> getHistoryListByUserIdWithTargetId (@RequestParam("userId") Long userId, @RequestParam("targetUserId") Long targetUserID  ,@RequestParam(value = "count", required = false) Long count) {
+        List<HistoryResponseDTO> resData;
+        if (count == null) {
+             resData = historyService.getHistoryListByUserIdWithTargetId(userId, targetUserID);
+        } else {
+            resData = historyService.getHistoryListByUserIdWithTargetId(userId, targetUserID, count);
+        }
+
+        return ResponseEntity.ok(resData);
+    }
+
+//    @GetMapping("/shorts")
+//    @Operation(summary = "주고 받은 영상 내역 보기")
+//    public ResponseEntity<List<>>
+
 }
