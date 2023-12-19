@@ -41,6 +41,9 @@ spec:
             - name: media-data
               mountPath: /root/data
               readOnly: false
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsUser: 0
       volumes:
         - name: media-data
           persistentVolumeClaim:
