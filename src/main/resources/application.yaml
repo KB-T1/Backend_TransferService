@@ -8,12 +8,12 @@ spring:
     activate:
       on-profile: dev
   application:
-    name: Backend_UserService
+    name: Backend_TransferService
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://${DB_SERVER:165.192.105.57}:${DB_PORT:31029}/${DB_NAME:kbt1}?useUnicode=true&characterEncoding=utf-8
-    username: ${DB_USERNAME:faker}
+    username: ${DB_USERNAME:root}
     password: ${DB_PASSWORD:kbt1Best!}
     hikari:
       connection-timeout: 5000
