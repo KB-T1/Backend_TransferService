@@ -1,12 +1,14 @@
 package com.kbt1.ollilove.transferservice.service;
 
 import com.kbt1.ollilove.transferservice.domain.History;
+import com.kbt1.ollilove.transferservice.dto.FamilyMemberDTO;
 import com.kbt1.ollilove.transferservice.dto.HistoryResponseDTO;
 import com.kbt1.ollilove.transferservice.repository.HistoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 

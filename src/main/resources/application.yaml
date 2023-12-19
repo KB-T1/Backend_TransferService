@@ -1,30 +1,3 @@
-#local, dev ?? ???? ?? ?
-server:
-  port: ${PORT:8080}
-  servlet:
-    context-path: ${SERVLET_CONTEXT_PATH:/}
-
-spring:
-  config:
-    activate:
-      on-profile: local
-
-
-
-  datasource:
-    username: root
-    password: rlatp1409
-    url: jdbc:mysql://localhost:3306/kbt1?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Seoul
-    driver-class-name: com.mysql.cj.jdbc.Driver
-
-  upload:
-    dir: /media/
-
-  multipart:
-    max-file-size: 5MB
-    max-request-size: 5MB
----
-
 server:
   port: ${PORT:18081}
   servlet:
