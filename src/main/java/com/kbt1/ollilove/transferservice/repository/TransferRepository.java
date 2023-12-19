@@ -9,5 +9,4 @@ import java.util.List;
 @Repository
 public interface TransferRepository extends JpaRepository<Transfer, Long> {
     List<Transfer> findAllBySenderIdOrReceiverIdOrderByRegDateAsc(Long senderId, Long receiverId);
-    Transfer findByTransferId(Long transferId);
 }

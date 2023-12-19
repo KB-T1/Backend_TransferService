@@ -56,10 +56,4 @@ public class TransferController {
         return ResponseEntity.ok("Video uploaded successfully. Video URL: " + videoUrl);
     }
 
-//    @DeleteMapping("/video")
-//    @Operation(summary="비디오 다시 찍기")
-//    public ResponseEntity deleteVideo(@RequestParam String videoUrl) {
-//        videoService.deleteVideo(videoUrl);
-//
-//    }
 }

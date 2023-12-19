@@ -1,31 +1,48 @@
 package com.kbt1.ollilove.transferservice.service;
 
 import com.kbt1.ollilove.transferservice.dto.VideoRequestDTO;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.time.LocalDateTime;
+import java.util.UUID;
 
 
 @Service
 public class VideoServiceImpl implements VideoService{
 
-    private String uploadDir = "/"; // application.properties에 설정된 업로드 디렉토리
+    @Value("${upload.dir}")
+    private String uploadDir; //  수정 요함
 
     public String saveVideo(VideoRequestDTO videoRequestDTO) {
         // 고유한 주소값 생성
-        String uniqueAddress = generateUniqueAddress(videoRequestDTO.getSenderId(), videoRequestDTO.getReceiverId(), videoRequestDTO.getRegDate());
-
+        String uniqueAddress = generateUniqueAddress(videoRequestDTO.getSenderId(), videoRequestDTO.getReceiverId());
         // 저장될 파일 경로
-        String filePath = uploadDir + File.separator + uniqueAddress + ".webm";
+        String filePath = uploadDir + File.separator + uniqueAddress;
 
+        File directory = new File(filePath);
+        if (!directory.exists()) {
+            boolean success = directory.mkdirs();
+            if (success) {
+                System.out.println("Directory created successfully: " + filePath);
+            } else {
+                System.err.println("Failed to create directory: " + filePath);
+            }
+        } else {
+            System.out.println("Directory already exists: " + filePath);
+        }
+
+
+        UUID uuid = UUID.randomUUID();
+        String fileName = uuid + "-" + videoRequestDTO.getVideo().getOriginalFilename();
         // 동영상 파일 저장
         try {
-            saveVideoFile(videoRequestDTO.getVideo(), filePath);
+            File saveFile = new File(filePath, fileName);
+            if (!saveFile.exists()) {
+                saveVideoFile(videoRequestDTO.getVideo(), saveFile);
+            }
         } catch (IOException e) {
             e.printStackTrace();
             // 예외 처리 로직 추가
@@ -35,13 +52,12 @@ public class VideoServiceImpl implements VideoService{
         return filePath; // 또는 DB에 저장할 경우 저장된 주소를 반환
     }
 
-    private String generateUniqueAddress(Long sender, Long receiver, LocalDateTime regDate) {
-        return sender + "/" + receiver + "/" + regDate;
+    private String generateUniqueAddress(Long sender, Long receiver) {
+        return sender + "/" + receiver + "/";
     }
 
-    private void saveVideoFile(MultipartFile videoFile, String filePath) throws IOException {
-        // 동영상 파일 저장 로직
-        Path path = Paths.get(filePath);
-        videoFile.transferTo(path);
+    private void saveVideoFile(MultipartFile videoFile, File saveFile) throws IOException {
+        // 동영상 파일 저장
+        videoFile.transferTo(saveFile);
     }
 }
