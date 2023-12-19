@@ -13,6 +13,5 @@ import java.time.LocalDateTime;
 public class VideoRequestDTO {
     private Long senderId;
     private Long receiverId;
-    private LocalDateTime regDate;
     private MultipartFile video;
 }

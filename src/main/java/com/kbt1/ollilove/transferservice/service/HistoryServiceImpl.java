@@ -2,10 +2,12 @@ package com.kbt1.ollilove.transferservice.service;
 
 import com.kbt1.ollilove.transferservice.domain.History;
 import com.kbt1.ollilove.transferservice.dto.FamilyMemberDTO;
+import com.kbt1.ollilove.transferservice.dto.FamilyMemberResponse;
 import com.kbt1.ollilove.transferservice.dto.HistoryResponseDTO;
 import com.kbt1.ollilove.transferservice.repository.HistoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -81,5 +83,14 @@ public class HistoryServiceImpl implements HistoryService {
             historyResDTOList.add(historyResDTO);
         }
         return historyResDTOList;
+    }
+
+    //유저 서비스 -> 가족 정보 가져오기
+    private HashMap<Long, FamilyMemberDTO> fetchFamilyInfoByUserID (Long userId) {
+        RestTemplate restTemplate = new RestTemplate();
+        String apiUrl = "http://user.com";
+        FamilyMemberResponse result = restTemplate.getForObject(apiUrl, FamilyMemberResponse.class);
+        HashMap<Long, FamilyMemberDTO> familyMap = new HashMap<Long, FamilyMemberDTO>();
+        return familyMap;
     }
 }

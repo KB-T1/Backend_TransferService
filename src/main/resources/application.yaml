@@ -8,7 +8,7 @@ spring:
     activate:
       on-profile: dev
   application:
-    name: Backend_UserService
+    name: Backend_TransferService
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -33,3 +33,6 @@ spring:
 logging:
   level:
     org.hibernate.SQL: debug
+
+upload:
+  dir: /Users/gimsehan/Develop/KB-T1/Backend_TransferService/src/main/resources/static/video
