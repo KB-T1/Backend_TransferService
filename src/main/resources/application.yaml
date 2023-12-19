@@ -4,9 +4,6 @@ server:
     context-path: ${SERVLET_CONTEXT_PATH:/}
 
 spring:
-  config:
-    activate:
-      on-profile: dev
   application:
     name: Backend_TransferService
 
@@ -27,7 +24,7 @@ spring:
     open-in-view: false
     show-sql: true
     hibernate:
-      ddl-auto: validate
+      ddl-auto: none
       format_sql: true
 
 logging:
