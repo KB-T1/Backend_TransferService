@@ -37,6 +37,15 @@ spec:
             limits:
               cpu: 500m
               memory: 1024Mi
+          volumeMounts:
+            - name: media-data
+              mountPath: /root/data
+              readOnly: false
+      volumes:
+        - name: media-data
+          persistentVolumeClaim:
+            claimName: kbt1-ollilove-transfer-pvc
+            readOnly: false
 
 ---
 
