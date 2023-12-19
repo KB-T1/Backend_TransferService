@@ -4,9 +4,6 @@ server:
     context-path: ${SERVLET_CONTEXT_PATH:/}
 
 spring:
-  config:
-    activate:
-      on-profile: dev
   application:
     name: Backend_TransferService
 
