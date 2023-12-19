@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -15,16 +16,54 @@ import java.util.List;
 public class HistoryServiceImpl implements HistoryService {
     private final HistoryRepository historyRepository;
 
-    //송금내역 보기
+    //마음 내역 보기
     @Override
-    public List<HistoryResponseDTO> getHistoryByUserIdAndCount(Long userId, int count) {
+    public List<HistoryResponseDTO> getHistoryListByUserIdAndCount(Long userId) {
+        List<HistoryResponseDTO> historyResDTOList = addAmountAtTransferHistory(getHistoryListByUserID(userId));
+        return historyResDTOList;
+    }
 
-        List<History> histories = historyRepository.findBySenderIdOrReceiverIdOrderByRegDateDesc(userId, userId);
+    //개수 정해서 마음 내역 보기
+    @Override
+    public List<HistoryResponseDTO> getHistoryListByUserIdAndCount(Long userId, Long count) {
+        List<HistoryResponseDTO> historyResDTOList = addAmountAtTransferHistory(getHistoryListByUserID(userId));
+        return historyResDTOList.subList(0, count.intValue());
+    }
+
+    //userID 와 targetUserID간에 마음 내역 보기
+    @Override
+    public List<HistoryResponseDTO> getHistoryListByUserIdWithTargetId(Long userId, Long targetUserId) {
+        List<HistoryResponseDTO> historyDTOs = getHistoryListByUserIdAndCount(userId);
+        List<HistoryResponseDTO> filteredHistoryDTOs = historyDTOs
+                .stream()
+                .filter(historyDTO -> historyDTO.getSenderId() == targetUserId || historyDTO.getReceiverId() == targetUserId)
+                .collect(Collectors.toList());
+        return filteredHistoryDTOs;
+    }
+
+    //userID 와 targetUserID간에 마음 내역 보기 - 개수 정해서
+    @Override
+    public List<HistoryResponseDTO> getHistoryListByUserIdWithTargetId(Long userId, Long targetUserId, Long count) {
+        List<HistoryResponseDTO> historyDTOs = getHistoryListByUserIdAndCount(userId);
+        List<HistoryResponseDTO> filteredHistoryDTOs = historyDTOs
+                .stream()
+                .filter(historyDTO -> historyDTO.getSenderId() == targetUserId || historyDTO.getReceiverId() == targetUserId)
+                .collect(Collectors.toList());
+        return filteredHistoryDTOs.subList(0, count.intValue());
+    }
+
+
+
+    //내역 긁어오기
+    private List<History> getHistoryListByUserID (Long userId) {
+            return historyRepository.findBySenderIdOrReceiverIdOrderByRegDateDesc(userId, userId);
+    }
+
+    //송금 금액 더하기
+    private List<HistoryResponseDTO> addAmountAtTransferHistory(List<History> histories) {
         List<HistoryResponseDTO> historyResDTOList = new ArrayList<>();
 
-        int i = 0;
         for (History history : histories) {
-            if (i == count) break;
             HistoryResponseDTO historyResDTO = new HistoryResponseDTO(
                     history.getHistoryId(),
                     history.getSenderId(),
@@ -38,9 +77,7 @@ public class HistoryServiceImpl implements HistoryService {
                 historyResDTO.setAmount(amount);
             }
             historyResDTOList.add(historyResDTO);
-            i++;
         }
-
         return historyResDTOList;
     }
 }
