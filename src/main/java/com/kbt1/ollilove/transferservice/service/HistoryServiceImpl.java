@@ -23,11 +23,11 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class HistoryServiceImpl implements HistoryService {
     private final HistoryRepository historyRepository;
-    @Value("${api.user}")
     private String USER_API_BASE_URL;
 
     //마음 내역 보기
     @Override
+    @Transactional
     public ResultDTO<List<HistoryResponseDTO>> getHistoryListByUserIdAndCount(Long userId) {
         List<HistoryResponseDTO> historyResDTOList = addAmountAtTransferHistory(getHistoryListByUserID(userId));
         return ResultDTO.<List<HistoryResponseDTO>>builder()
@@ -38,6 +38,7 @@ public class HistoryServiceImpl implements HistoryService {
 
     //개수 정해서 마음 내역 보기
     @Override
+    @Transactional
     public ResultDTO<List<HistoryResponseDTO>> getHistoryListByUserIdAndCount(Long userId, Long count) {
         List<HistoryResponseDTO> historyResDTOList = addAmountAtTransferHistory(getHistoryListByUserID(userId));
         return ResultDTO.<List<HistoryResponseDTO>>builder()
@@ -48,6 +49,7 @@ public class HistoryServiceImpl implements HistoryService {
 
     //userID 와 targetUserID간 마음 내역 보기
     @Override
+    @Transactional
     public ResultDTO<List<HistoryResponseDTO>> getHistoryListByUserIdWithTargetId(Long userId, Long targetUserId) {
         List<HistoryResponseDTO> historyResDTOList = getHistoryListByUserIdAndCount(userId).getData();
         List<HistoryResponseDTO> filteredHistoryDTOs = historyResDTOList
@@ -62,6 +64,7 @@ public class HistoryServiceImpl implements HistoryService {
 
     //userID 와 targetUserID간에 마음 내역 보기 - 개수 정해서
     @Override
+    @Transactional
     public ResultDTO<List<HistoryResponseDTO>> getHistoryListByUserIdWithTargetId(Long userId, Long targetUserId, Long count) {
         List<HistoryResponseDTO> historyResDTOList = getHistoryListByUserIdAndCount(userId).getData();
         List<HistoryResponseDTO> filteredHistoryDTOs = historyResDTOList
@@ -118,7 +121,7 @@ public class HistoryServiceImpl implements HistoryService {
     private HashMap<Long, FamilyMemberDTO> fetchFamilyInfoByUserID (Long userId) {
         RestTemplate restTemplate = new RestTemplate();
 
-
+        USER_API_BASE_URL = "";
         FamilyMemberDTO result = restTemplate.getForObject(USER_API_BASE_URL, FamilyMemberDTO.class);
         HashMap<Long, FamilyMemberDTO> familyMap = new HashMap<Long, FamilyMemberDTO>();
         return familyMap;
