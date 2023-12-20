@@ -30,7 +30,6 @@ public class HistoryController {
             //값이 비어있는 경우
             resData = historyService.getHistoryListByUserIdAndCount(userId, count);
         }
-
         return ResponseEntity.ok(resData);
     }
 
@@ -43,7 +42,6 @@ public class HistoryController {
         } else {
             resData = historyService.getHistoryListByUserIdWithTargetId(userId, targetUserID, count);
         }
-
         return ResponseEntity.ok(resData);
     }
 
