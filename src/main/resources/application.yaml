@@ -31,7 +31,7 @@ logging:
   level:
     org.hibernate.SQL: debug
 
-#upload:
-#  dir: /root/data
 upload:
-  dir: /Users/gimsehan/media
+  dir: /root/data
+#upload:
+#  dir: /Users/gimsehan/media

@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin("http://localhost:3000")
 public class TransferController {
     private final TransferService transferService;
-    private final VideoServiceImpl videoService;
+//    private final VideoServiceImpl videoService;
 
 //    @GetMapping("")
 //    @Operation(summary="송금 기록")
@@ -41,11 +41,10 @@ public class TransferController {
         return ResponseEntity.ok(transferService.createTransfer(transferRequestDTO));
     }
 
-    @PostMapping(value = "/video", consumes = "multipart/form-data")
-    @Operation(summary="비디오 업로드")
-    public ResponseEntity<String> uploadVideo(VideoRequestDTO videoRequestDTO) {
-        String videoUrl = videoService.saveVideo(videoRequestDTO);
-        return ResponseEntity.ok("Video uploaded successfully. Video URL: " + videoUrl);
-    }
-
+//    @PostMapping(value = "/video", consumes = "multipart/form-data")
+//    @Operation(summary="비디오 업로드")
+//    public ResponseEntity<String> uploadVideo(VideoRequestDTO videoRequestDTO) {
+//        String videoUrl = videoService.saveVideo(videoRequestDTO);
+//        return ResponseEntity.ok("Video uploaded successfully. Video URL: " + videoUrl);
+//    }
 }

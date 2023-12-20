@@ -35,7 +35,7 @@ public class HistoryController {
     }
 
     @GetMapping("/with")
-    @Operation(summary = "마음 주고받은 내역 보기")
+    @Operation(summary = "다른 사람과 주고받은 마음 보기")
     public ResponseEntity<ResultDTO<List<HistoryResponseDTO>>> getHistoryListByUserIdWithTargetId (@RequestParam("userId") Long userId, @RequestParam("targetUserId") Long targetUserID  ,@RequestParam(value = "count", required = false) Long count) {
         ResultDTO<List<HistoryResponseDTO>> resData;
         if (count == null) {
