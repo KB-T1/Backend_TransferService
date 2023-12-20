@@ -8,7 +8,6 @@ import com.kbt1.ollilove.transferservice.dto.HistoryResponseDTO;
 import com.kbt1.ollilove.transferservice.dto.ResultDTO;
 import com.kbt1.ollilove.transferservice.repository.HistoryRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
@@ -41,6 +40,12 @@ public class HistoryServiceImpl implements HistoryService {
     @Transactional
     public ResultDTO<List<HistoryResponseDTO>> getHistoryListByUserIdAndCount(Long userId, Long count) {
         List<HistoryResponseDTO> historyResDTOList = addAmountAtTransferHistory(getHistoryListByUserID(userId));
+        if (count > historyResDTOList.size()) {
+            return ResultDTO.<List<HistoryResponseDTO>>builder()
+                    .success(true)
+                    .data(historyResDTOList)
+                    .build();
+        }
         return ResultDTO.<List<HistoryResponseDTO>>builder()
                 .success(true)
                 .data(historyResDTOList.subList(0, count.intValue()))
@@ -71,6 +76,12 @@ public class HistoryServiceImpl implements HistoryService {
                 .stream()
                 .filter(historyDTO -> historyDTO.getSenderId().equals(targetUserId) || historyDTO.getReceiverId().equals(targetUserId))
                 .collect(Collectors.toList());
+        if (count > filteredHistoryDTOs.size()) {
+            return ResultDTO.<List<HistoryResponseDTO>>builder()
+                    .success(true)
+                    .data(filteredHistoryDTOs)
+                    .build();
+        }
         return ResultDTO.<List<HistoryResponseDTO>>builder()
                 .success(true)
                 .data(filteredHistoryDTOs.subList(0, count.intValue()))
