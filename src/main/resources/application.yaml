@@ -33,7 +33,3 @@ logging:
 
 upload:
   dir: /root/data
-
-api:
-  user: http://kbt1-ollilove-user-api.165.192.105.60.nip.io
-  transfer: http://kbt1-ollilove-transfer-api.165.192.105.60.nip.io
