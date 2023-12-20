@@ -69,6 +69,7 @@ public class VideoServiceImpl implements VideoService{
     }
     //파일 확장자 추출
     private static String getFileExtension(String filename) {
+        System.out.println(filename);
         int lastDotIndex = filename.lastIndexOf('.');
         if (lastDotIndex > 0) {
             return filename.substring(lastDotIndex + 1);
