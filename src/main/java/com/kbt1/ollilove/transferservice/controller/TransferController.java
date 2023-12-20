@@ -3,9 +3,7 @@ package com.kbt1.ollilove.transferservice.controller;
 
 import com.kbt1.ollilove.transferservice.dto.ResultDTO;
 import com.kbt1.ollilove.transferservice.dto.TransferRequestDTO;
-import com.kbt1.ollilove.transferservice.dto.VideoRequestDTO;
 import com.kbt1.ollilove.transferservice.service.TransferService;
-import com.kbt1.ollilove.transferservice.service.VideoServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +22,15 @@ public class TransferController {
     private final TransferService transferService;
 //    private final VideoServiceImpl videoService;
 
+    @Operation(summary = "영상+송금 보내기")
+    @PostMapping(value="/new", consumes = "multipart/form-data")
+    public ResponseEntity<ResultDTO> createTransfer (TransferRequestDTO transferRequestDTO) {
+        if (!transferRequestDTO.getVideo().isEmpty()) {
+            return ResponseEntity.ok(transferService.createTransfer(transferRequestDTO));
+        }
+        else return ResponseEntity.badRequest().body(ResultDTO.builder().success(false).build());
+    }
+
 //    @GetMapping("")
 //    @Operation(summary="송금 기록")
 //    public ResponseEntity<Transfer> getTransferById(@RequestParam("transferId") Long transferId) {
@@ -35,12 +42,6 @@ public class TransferController {
 //    public ResponseEntity<ResultDTO> getTransferAllByUserId (@RequestParam("userId") Long userId) {
 //        return ResponseEntity.ok(transferService.getTransferAllByUserId(userId));
 //    }
-    @Operation(summary = "영상+송금 보내기")
-    @PostMapping(value="/new", consumes = "multipart/form-data")
-    public ResponseEntity<ResultDTO> createTransfer (TransferRequestDTO transferRequestDTO) {
-        return ResponseEntity.ok(transferService.createTransfer(transferRequestDTO));
-    }
-
 //    @PostMapping(value = "/video", consumes = "multipart/form-data")
 //    @Operation(summary="비디오 업로드")
 //    public ResponseEntity<String> uploadVideo(VideoRequestDTO videoRequestDTO) {

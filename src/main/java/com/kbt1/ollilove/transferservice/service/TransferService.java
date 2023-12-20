@@ -12,6 +12,5 @@ import java.util.List;
 @Service
 public interface TransferService {
     Transfer getTransferById(Long transferId);
-    ResultDTO<List<Transfer>> getTransferAllByUserId(Long transferId);
     ResultDTO<History> createTransfer (TransferRequestDTO transferRequestDTO);
 }
