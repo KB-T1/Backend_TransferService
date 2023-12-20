@@ -21,14 +21,14 @@ public class AccountController {
 
     @PostMapping("/new")
     @Operation(summary="신규 계좌번호 생성")
-    public ResponseEntity<ResultDTO> createNewAccount(@RequestParam Long userId) {
+    public ResponseEntity<ResultDTO<AccountResponseDTO>> createNewAccount(@RequestParam Long userId) {
         return ResponseEntity.ok(accountService.createNewAccount(userId));
     }
 
     //내 계좌정보 가져오기
     @GetMapping("/my")
     @Operation(summary="계좌 정보 조회")
-    public ResponseEntity<ResultDTO> getMyAccountInfo(@RequestParam Long userId) {
+    public ResponseEntity<ResultDTO<AccountResponseDTO>> getMyAccountInfo(@RequestParam Long userId) {
         return ResponseEntity.ok(accountService.getAccountInfo(userId));
     }
 

@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/transfer-api/transfer")
 @RequiredArgsConstructor
 @Tag(name="Transfer", description = "송금 API")
-@CrossOrigin("http://localhost:3000")
+@CrossOrigin({"http://localhost:3000", "http://ollilove.165.192.105.60.nip.io"})
 public class TransferController {
     private final TransferService transferService;
 //    private final VideoServiceImpl videoService;
@@ -35,7 +35,7 @@ public class TransferController {
 //    public ResponseEntity<ResultDTO> getTransferAllByUserId (@RequestParam("userId") Long userId) {
 //        return ResponseEntity.ok(transferService.getTransferAllByUserId(userId));
 //    }
-
+    @Operation(summary = "영상+송금 보내기")
     @PostMapping(value="/new", consumes = "multipart/form-data")
     public ResponseEntity<ResultDTO> createTransfer (TransferRequestDTO transferRequestDTO) {
         return ResponseEntity.ok(transferService.createTransfer(transferRequestDTO));
