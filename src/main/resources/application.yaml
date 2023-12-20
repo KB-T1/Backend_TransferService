@@ -33,5 +33,3 @@ logging:
 
 upload:
   dir: /root/data
-#upload:
-#  dir: /Users/gimsehan/media
