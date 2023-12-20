@@ -4,9 +4,6 @@ server:
     context-path: ${SERVLET_CONTEXT_PATH:/}
 
 spring:
-  config:
-    activate:
-      on-profile: dev
   application:
     name: Backend_TransferService
 
@@ -34,5 +31,7 @@ logging:
   level:
     org.hibernate.SQL: debug
 
+#upload:
+#  dir: /root/data
 upload:
-  dir: /root/data
+  dir: /Users/gimsehan/media

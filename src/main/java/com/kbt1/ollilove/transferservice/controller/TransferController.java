@@ -1,8 +1,8 @@
 package com.kbt1.ollilove.transferservice.controller;
 
 
-import com.kbt1.ollilove.transferservice.domain.Transfer;
-import com.kbt1.ollilove.transferservice.dto.TransferDTO;
+import com.kbt1.ollilove.transferservice.dto.ResultDTO;
+import com.kbt1.ollilove.transferservice.dto.TransferRequestDTO;
 import com.kbt1.ollilove.transferservice.dto.VideoRequestDTO;
 import com.kbt1.ollilove.transferservice.service.TransferService;
 import com.kbt1.ollilove.transferservice.service.VideoServiceImpl;
@@ -13,40 +13,32 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 
 @Controller
 @RequestMapping("/transfer-api/transfer")
 @RequiredArgsConstructor
 @Tag(name="Transfer", description = "송금 API")
+@CrossOrigin("http://localhost:3000")
 public class TransferController {
     private final TransferService transferService;
     private final VideoServiceImpl videoService;
 
-    @GetMapping("")
-    @Operation(summary="송금 기록")
-    public ResponseEntity<Transfer> getTransferById(@RequestParam("transferId") Long transferId) {
-        TransferDTO transferDTO = new TransferDTO();
-        transferDTO.setTransferId(transferId);
-        Transfer transfer = transferService.getTransferById(transferDTO);
-        return ResponseEntity.ok(transfer);
-    }
+//    @GetMapping("")
+//    @Operation(summary="송금 기록")
+//    public ResponseEntity<Transfer> getTransferById(@RequestParam("transferId") Long transferId) {
+//        return ResponseEntity.ok(transferService.getTransferById(transferId));
+//    }
+//
+//    @GetMapping("/transfer")
+//    @Operation(summary="사용자의 송금 내역 보기")
+//    public ResponseEntity<ResultDTO> getTransferAllByUserId (@RequestParam("userId") Long userId) {
+//        return ResponseEntity.ok(transferService.getTransferAllByUserId(userId));
+//    }
 
-    @GetMapping("/transfer")
-    @Operation(summary="사용자의 송금 내역 보기")
-    public ResponseEntity<List<Transfer>> getTransferAllByUserId (@RequestParam("userId") Long userId) {
-        TransferDTO transferDTO = new TransferDTO();
-        transferDTO.setSenderId(userId);
-        transferDTO.setReceiverID(userId);
-        List<Transfer> resData = transferService.getTransferAllByUserId(transferDTO);
-        return ResponseEntity.ok(resData);
-    }
-
-    @PostMapping("/new")
-    public TransferDTO createTransfer (@RequestBody TransferDTO transferDTO) {
-
-        return null;
+    @PostMapping(value="/new", consumes = "multipart/form-data")
+    public ResponseEntity<ResultDTO> createTransfer (TransferRequestDTO transferRequestDTO) {
+        return ResponseEntity.ok(transferService.createTransfer(transferRequestDTO));
     }
 
     @PostMapping(value = "/video", consumes = "multipart/form-data")

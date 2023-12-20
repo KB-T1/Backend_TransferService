@@ -1,15 +1,15 @@
 package com.kbt1.ollilove.transferservice.domain;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Table(name="transfer")
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Transfer extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)

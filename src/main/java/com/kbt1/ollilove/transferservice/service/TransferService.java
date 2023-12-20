@@ -1,7 +1,9 @@
 package com.kbt1.ollilove.transferservice.service;
 
+import com.kbt1.ollilove.transferservice.domain.History;
 import com.kbt1.ollilove.transferservice.domain.Transfer;
-import com.kbt1.ollilove.transferservice.dto.TransferDTO;
+import com.kbt1.ollilove.transferservice.dto.ResultDTO;
+import com.kbt1.ollilove.transferservice.dto.TransferRequestDTO;
 import org.springframework.stereotype.Service;
 
 
@@ -9,7 +11,7 @@ import java.util.List;
 
 @Service
 public interface TransferService {
-    Transfer getTransferById(TransferDTO transferDTO);
-    List<Transfer> getTransferAllByUserId(TransferDTO transferDTO);
-    TransferDTO createTransfer (TransferDTO transferDTO);
+    Transfer getTransferById(Long transferId);
+    ResultDTO<List<Transfer>> getTransferAllByUserId(Long transferId);
+    ResultDTO<History> createTransfer (TransferRequestDTO transferRequestDTO);
 }
