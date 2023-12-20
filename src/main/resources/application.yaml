@@ -32,6 +32,8 @@ logging:
     org.hibernate.SQL: debug
 
 upload:
-  dir: /Users/gimsehan/media
+  dir: /root/data
 
-#  /root/data
+api-url:
+  user: http://kbt1-ollilove-user-api.165.192.105.60.nip.io
+  transfer: http://kbt1-ollilove-transfer-api.165.192.105.60.nip.io

@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class HistoryServiceImpl implements HistoryService {
     private final HistoryRepository historyRepository;
-    
+
     //마음 내역 보기
     @Override
     public ResultDTO<List<HistoryResponseDTO>> getHistoryListByUserIdAndCount(Long userId) {
@@ -114,7 +114,7 @@ public class HistoryServiceImpl implements HistoryService {
     //유저 서비스 -> 가족 정보 가져오기
     private HashMap<Long, FamilyMemberDTO> fetchFamilyInfoByUserID (Long userId) {
         RestTemplate restTemplate = new RestTemplate();
-        String apiUrl = "http://user.com";
+        String apiUrl = "http://";
         FamilyMemberDTO result = restTemplate.getForObject(apiUrl, FamilyMemberDTO.class);
         HashMap<Long, FamilyMemberDTO> familyMap = new HashMap<Long, FamilyMemberDTO>();
         return familyMap;
