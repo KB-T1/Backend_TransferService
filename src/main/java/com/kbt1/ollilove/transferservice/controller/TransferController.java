@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/transfer-api/transfer")
 @RequiredArgsConstructor
 @Tag(name="Transfer", description = "송금 API")
-@CrossOrigin({"http://localhost:3000", "http://ollilove.165.192.105.60.nip.io"})
+//@CrossOrigin({"http://localhost:3000", "http://ollilove.165.192.105.60.nip.io"})
 public class TransferController {
     private final TransferService transferService;
 //    private final VideoServiceImpl videoService;

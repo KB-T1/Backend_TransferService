@@ -15,7 +15,7 @@ import java.util.List;
 @RequestMapping("transfer-api/history")
 @RequiredArgsConstructor
 @Tag(name="History", description = "내역 관련 API")
-@CrossOrigin({"http://localhost:3000","http://ollilove.165.192.105.60.nip.io"})
+//@CrossOrigin({"http://localhost:3000","http://ollilove.165.192.105.60.nip.io"})
 public class HistoryController {
     private final HistoryService historyService;
 
