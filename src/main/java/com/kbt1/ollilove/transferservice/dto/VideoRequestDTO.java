@@ -1,15 +1,13 @@
 package com.kbt1.ollilove.transferservice.dto;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.time.LocalDateTime;
 
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class VideoRequestDTO {
     private Long senderId;
     private Long receiverId;

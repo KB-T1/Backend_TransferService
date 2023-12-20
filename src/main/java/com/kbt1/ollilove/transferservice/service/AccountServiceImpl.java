@@ -2,11 +2,11 @@ package com.kbt1.ollilove.transferservice.service;
 
 import com.kbt1.ollilove.transferservice.domain.Account;
 import com.kbt1.ollilove.transferservice.dto.AccountResponseDTO;
+import com.kbt1.ollilove.transferservice.dto.ResultDTO;
 import com.kbt1.ollilove.transferservice.repository.AccountRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -16,11 +16,10 @@ public class AccountServiceImpl implements AccountService{
     private final AccountRepository accountRepository;
 
     @Override
-    public AccountResponseDTO createNewAccount(Long userId) {
+    public ResultDTO<AccountResponseDTO> createNewAccount(Long userId) {
         Account account = generateRandomAccountBase();
         account.setUserId(userId);
         accountRepository.save(account);
-
         AccountResponseDTO accountResponseDTO = new AccountResponseDTO(
                 account.getAccountId(),
                 account.getUserId(),
@@ -28,11 +27,14 @@ public class AccountServiceImpl implements AccountService{
                 account.getAccountNumber(),
                 account.getBalance()
         );
-        return accountResponseDTO;
+        return ResultDTO.<AccountResponseDTO>builder()
+                .success(true)
+                .data(accountResponseDTO)
+                .build();
     }
 
     @Override
-    public AccountResponseDTO getAccountInfo(Long userId) {
+    public ResultDTO<AccountResponseDTO> getAccountInfo(Long userId) {
         Account account = accountRepository.findByUserId(userId);
         AccountResponseDTO accountResponseDTO = new AccountResponseDTO(
                 account.getAccountId(),
@@ -41,7 +43,10 @@ public class AccountServiceImpl implements AccountService{
                 account.getAccountNumber(),
                 account.getBalance()
         );
-        return accountResponseDTO;
+        return ResultDTO.<AccountResponseDTO>builder()
+                .success(true)
+                .data(accountResponseDTO)
+                .build();
     }
 
 

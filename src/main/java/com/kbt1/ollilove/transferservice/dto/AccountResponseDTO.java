@@ -1,14 +1,12 @@
 package com.kbt1.ollilove.transferservice.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class AccountResponseDTO {
     private Long accountId;
     private Long userId;
