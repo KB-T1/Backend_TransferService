@@ -8,6 +8,7 @@ import com.kbt1.ollilove.transferservice.dto.HistoryResponseDTO;
 import com.kbt1.ollilove.transferservice.dto.ResultDTO;
 import com.kbt1.ollilove.transferservice.repository.HistoryRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
@@ -22,6 +23,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class HistoryServiceImpl implements HistoryService {
     private final HistoryRepository historyRepository;
+    @Value("${api.user}")
+    private String USER_API_BASE_URL;
 
     //마음 내역 보기
     @Override
@@ -43,13 +46,13 @@ public class HistoryServiceImpl implements HistoryService {
                 .build();
     }
 
-    //userID 와 targetUserID간에 마음 내역 보기
+    //userID 와 targetUserID간 마음 내역 보기
     @Override
     public ResultDTO<List<HistoryResponseDTO>> getHistoryListByUserIdWithTargetId(Long userId, Long targetUserId) {
         List<HistoryResponseDTO> historyResDTOList = getHistoryListByUserIdAndCount(userId).getData();
         List<HistoryResponseDTO> filteredHistoryDTOs = historyResDTOList
                 .stream()
-                .filter(historyDTO -> historyDTO.getSenderId() == targetUserId || historyDTO.getReceiverId() == targetUserId)
+                .filter(historyDTO -> historyDTO.getSenderId().equals(targetUserId) || historyDTO.getReceiverId().equals(targetUserId))
                 .collect(Collectors.toList());
         return ResultDTO.<List<HistoryResponseDTO>>builder()
                 .success(true)
@@ -63,7 +66,7 @@ public class HistoryServiceImpl implements HistoryService {
         List<HistoryResponseDTO> historyResDTOList = getHistoryListByUserIdAndCount(userId).getData();
         List<HistoryResponseDTO> filteredHistoryDTOs = historyResDTOList
                 .stream()
-                .filter(historyDTO -> historyDTO.getSenderId() == targetUserId || historyDTO.getReceiverId() == targetUserId)
+                .filter(historyDTO -> historyDTO.getSenderId().equals(targetUserId) || historyDTO.getReceiverId().equals(targetUserId))
                 .collect(Collectors.toList());
         return ResultDTO.<List<HistoryResponseDTO>>builder()
                 .success(true)
@@ -114,8 +117,9 @@ public class HistoryServiceImpl implements HistoryService {
     //유저 서비스 -> 가족 정보 가져오기
     private HashMap<Long, FamilyMemberDTO> fetchFamilyInfoByUserID (Long userId) {
         RestTemplate restTemplate = new RestTemplate();
-        String apiUrl = "http://";
-        FamilyMemberDTO result = restTemplate.getForObject(apiUrl, FamilyMemberDTO.class);
+
+
+        FamilyMemberDTO result = restTemplate.getForObject(USER_API_BASE_URL, FamilyMemberDTO.class);
         HashMap<Long, FamilyMemberDTO> familyMap = new HashMap<Long, FamilyMemberDTO>();
         return familyMap;
     }
