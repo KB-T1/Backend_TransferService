@@ -28,7 +28,7 @@ public class History extends BaseTimeEntity {
     @Column(name="is_reply", columnDefinition = "tinyInt(1)")
     private Boolean isReply;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.PERSIST)
     @JoinColumn(name = "transfer_id",nullable = false)
     private Transfer transfer;
 }

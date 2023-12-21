@@ -26,11 +26,11 @@ public class TransferController {
     @PostMapping(value = "/new", consumes = "multipart/form-data")
     public ResponseEntity<ResultDTO> createTransfer(TransferRequestDTO transferRequestDTO) {
         //송금보내기
-        if (transferRequestDTO.getTransferId() == -1 || !transferRequestDTO.getVideo().isEmpty()) {
+        if (transferRequestDTO.getTransferId() == -1 && !transferRequestDTO.getVideo().isEmpty()) {
             return ResponseEntity.ok(transferService.createTransfer(transferRequestDTO));
 
         } //답장보내기
-        else if (transferRequestDTO.getAmount() == -1 || !transferRequestDTO.getVideo().isEmpty()) {
+        else if (transferRequestDTO.getAmount() == -1 && !transferRequestDTO.getVideo().isEmpty()) {
             return ResponseEntity.ok(transferService.replyWithVideo(transferRequestDTO));
 
         } else return ResponseEntity.badRequest().body(ResultDTO.builder().success(false).build());
