@@ -6,7 +6,6 @@ import com.kbt1.ollilove.transferservice.dto.ResultDTO;
 import com.kbt1.ollilove.transferservice.dto.TransferRequestDTO;
 import org.springframework.stereotype.Service;
 
-
 import java.util.List;
 
 @Service
@@ -15,5 +14,7 @@ public interface TransferService {
 
     ResultDTO<List<Transfer>> getTransferAllByUserId(Long userId);
 
-    ResultDTO<History> createTransfer (TransferRequestDTO transferRequestDTO);
+    ResultDTO<History> createTransfer(TransferRequestDTO transferRequestDTO);
+
+    ResultDTO<History> replyWithVideo(TransferRequestDTO transferRequestDTO);
 }

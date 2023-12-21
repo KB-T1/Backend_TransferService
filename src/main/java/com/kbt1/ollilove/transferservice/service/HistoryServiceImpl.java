@@ -3,7 +3,6 @@ package com.kbt1.ollilove.transferservice.service;
 import com.kbt1.ollilove.transferservice.domain.History;
 import com.kbt1.ollilove.transferservice.domain.Transfer;
 import com.kbt1.ollilove.transferservice.dto.FamilyMemberDTO;
-import com.kbt1.ollilove.transferservice.dto.HistoryDTO;
 import com.kbt1.ollilove.transferservice.dto.HistoryResponseDTO;
 import com.kbt1.ollilove.transferservice.dto.ResultDTO;
 import com.kbt1.ollilove.transferservice.repository.HistoryRepository;
@@ -87,23 +86,25 @@ public class HistoryServiceImpl implements HistoryService {
                 .data(filteredHistoryDTOs.subList(0, count.intValue()))
                 .build();
     }
+
     //히스토리 기록하기
     @Transactional
-    public History saveHistoryRecord (HistoryDTO historyDTO, Transfer transfer) {
+    public History saveHistoryRecord(Transfer transfer, Boolean isReply, String videoUrl) {
         //Transfer 조회
         History history = History.builder()
-                .senderId(historyDTO.getSenderId())
-                .receiverId(historyDTO.getReceiverId())
+                .senderId(transfer.getSenderId())
+                .receiverId(transfer.getReceiverId())
                 .transferId(transfer)
-                .videoUrl(historyDTO.getVideoUrl())
-                .isReply(historyDTO.getIsReply())
+                .videoUrl(videoUrl)
+                .isReply(isReply)
                 .build();
         return historyRepository.save(history);
     }
 
+
     //내역 긁어오기
-    private List<History> getHistoryListByUserID (Long userId) {
-            return historyRepository.findBySenderIdOrReceiverIdOrderByRegDateDesc(userId, userId);
+    private List<History> getHistoryListByUserID(Long userId) {
+        return historyRepository.findBySenderIdOrReceiverIdOrderByRegDateDesc(userId, userId);
     }
 
     //내역에 송금 금액 불러와 작성하기
@@ -129,7 +130,7 @@ public class HistoryServiceImpl implements HistoryService {
     }
 
     //유저 서비스 -> 가족 정보 가져오기
-    private HashMap<Long, FamilyMemberDTO> fetchFamilyInfoByUserID (Long userId) {
+    private HashMap<Long, FamilyMemberDTO> fetchFamilyInfoByUserID(Long userId) {
         RestTemplate restTemplate = new RestTemplate();
 
         USER_API_BASE_URL = "";

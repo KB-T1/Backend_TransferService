@@ -2,7 +2,6 @@ package com.kbt1.ollilove.transferservice.service;
 
 import com.kbt1.ollilove.transferservice.domain.History;
 import com.kbt1.ollilove.transferservice.domain.Transfer;
-import com.kbt1.ollilove.transferservice.dto.HistoryDTO;
 import com.kbt1.ollilove.transferservice.dto.HistoryResponseDTO;
 import com.kbt1.ollilove.transferservice.dto.ResultDTO;
 
@@ -16,5 +15,5 @@ public interface HistoryService {
     //두명 간에 송금내역 보기
     ResultDTO<List<HistoryResponseDTO>> getHistoryListByUserIdWithTargetId(Long userId, Long targetUserId);
     ResultDTO<List<HistoryResponseDTO>> getHistoryListByUserIdWithTargetId(Long userId, Long targetUserId, Long count);
-    History saveHistoryRecord(HistoryDTO historyDTO, Transfer transfer);
+    History saveHistoryRecord (Transfer transfer, Boolean isReply, String videoUrl);
 }

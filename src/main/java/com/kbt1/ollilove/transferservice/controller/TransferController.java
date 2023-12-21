@@ -9,27 +9,32 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.*;
-
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 
 @Controller
 @RequestMapping("/transfer-api/transfer")
 @RequiredArgsConstructor
-@Tag(name="Transfer", description = "송금 API")
+@Tag(name = "Transfer", description = "송금 API")
 //@CrossOrigin({"http://localhost:3000", "http://ollilove.165.192.105.60.nip.io"})
 public class TransferController {
     private final TransferService transferService;
 //    private final VideoServiceImpl videoService;
 
     @Operation(summary = "영상+송금 보내기")
-    @PostMapping(value="/new", consumes = "multipart/form-data")
-    public ResponseEntity<ResultDTO> createTransfer (TransferRequestDTO transferRequestDTO) {
-        if (!transferRequestDTO.getVideo().isEmpty()) {
+    @PostMapping(value = "/new", consumes = "multipart/form-data")
+    public ResponseEntity<ResultDTO> createTransfer(TransferRequestDTO transferRequestDTO) {
+
+        //송금보내기
+        if (transferRequestDTO.getTransferId() == -1 || !transferRequestDTO.getVideo().isEmpty()) {
             return ResponseEntity.ok(transferService.createTransfer(transferRequestDTO));
-        }
-        else return ResponseEntity.badRequest().body(ResultDTO.builder().success(false).build());
+
+        } //답장보내기
+        else if (transferRequestDTO.getAmount() == -1 || !transferRequestDTO.getVideo().isEmpty()) {
+            return ResponseEntity.ok(transferService.replyWithVideo(transferRequestDTO));
+
+        } else return ResponseEntity.badRequest().body(ResultDTO.builder().success(false).build());
     }
 
 //    @GetMapping("")

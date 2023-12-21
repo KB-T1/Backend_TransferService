@@ -11,6 +11,8 @@ import org.springframework.web.multipart.MultipartFile;
 @NoArgsConstructor
 @Data
 public class TransferRequestDTO {
+
+    private Long transferId;
     private Long amount;
     private Long senderId;
     private Long receiverId;
