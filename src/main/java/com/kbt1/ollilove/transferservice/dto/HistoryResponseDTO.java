@@ -9,10 +9,17 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Data
 @AllArgsConstructor
+@Builder
 public class HistoryResponseDTO {
     private Long historyId;
     private Long senderId;
+    private String senderName;
+    private String senderNickName;
+    private String senderProfile;
     private Long receiverId;
+    private String receiverName;
+    private String receiverNickName;
+    private String receiverProfile;
     private String videoUrl;
     private Boolean isReply;
     private LocalDateTime createdAt;
