@@ -24,16 +24,6 @@ public class TransferServiceImpl implements TransferService {
         return transferRepository.findByTransferId(transferId);
     }
 
-    @Override
-    public ResultDTO<List<Transfer>> getTransferAllByUserId(Long userId) {
-        List<Transfer> transferList = transferRepository.findAllBySenderIdOrReceiverIdOrderByRegDateAsc(
-                userId, userId
-        );
-        return ResultDTO.<List<Transfer>>builder()
-                .success(true)
-                .data(transferList)
-                .build();
-    }
 
     //송금 보내기
     @Override
@@ -57,7 +47,6 @@ public class TransferServiceImpl implements TransferService {
 
     @Transactional
     public ResultDTO<History> replyWithVideo(TransferRequestDTO transferRequestDTO) {
-
         //History에 저장
         History history = historyService.saveHistoryRecord(getTransferById(transferRequestDTO.getTransferId()), true, saveVideo(transferRequestDTO));
 

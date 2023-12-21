@@ -46,7 +46,6 @@ public class HistoryServiceImpl implements HistoryService {
     @Override
     @Transactional
     public ResultDTO<List<HistoryResponseDTO>> getHistoryListByUserIdWithTargetId(Long userId, Long targetUserId) {
-        List<HistoryResponseDTO> historyFinalList = getHistoryList(userId);
         List<HistoryResponseDTO> historyResDTOList = getHistoryListByUserIdAndCount(userId).getData();
         List<HistoryResponseDTO> filteredHistoryDTOs = historyResDTOList
                 .stream()
@@ -91,7 +90,7 @@ public class HistoryServiceImpl implements HistoryService {
         History history = History.builder()
                 .senderId(transfer.getSenderId())
                 .receiverId(transfer.getReceiverId())
-                .transferId(transfer)
+                .transfer(transfer)
                 .videoUrl(videoUrl)
                 .isReply(isReply)
                 .build();
@@ -116,10 +115,11 @@ public class HistoryServiceImpl implements HistoryService {
                     .videoUrl(history.getVideoUrl())
                     .isReply(history.getIsReply())
                     .createdAt(history.getRegDate())
-                    .amount(0L)
+                    .amount(Long.valueOf(-1))
+                    .transferId(history.getTransfer().getTransferId())
                     .build();
             if (!history.getIsReply()) {
-                Long amount = history.getTransferId().getAmount();
+                Long amount = history.getTransfer().getAmount();
                 historyResDTO.setAmount(amount);
             }
             historyResDTOList.add(historyResDTO);

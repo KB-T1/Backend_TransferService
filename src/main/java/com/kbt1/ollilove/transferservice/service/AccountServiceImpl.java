@@ -60,7 +60,6 @@ public class AccountServiceImpl implements AccountService{
         int thirdPart = random.nextInt(90000) + 10000;
         accountBase.setAccountNumber(String.format("%06d-%02d-%06d", firstPart, secondPart, thirdPart));
 
-        Random randomNum = new Random();
         accountBase.setBalance(ThreadLocalRandom.current().nextLong(500000, 1500000 + 1));
 
         accountBase.setBankName("국민은행");

@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 @Builder
 public class HistoryResponseDTO {
     private Long historyId;
+    private Long transferId;
     private Long senderId;
     private String senderName;
     private String senderNickName;

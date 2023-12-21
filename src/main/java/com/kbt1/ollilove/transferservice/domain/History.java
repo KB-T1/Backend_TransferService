@@ -30,5 +30,5 @@ public class History extends BaseTimeEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "transfer_id",nullable = false)
-    private Transfer transferId;
+    private Transfer transfer;
 }

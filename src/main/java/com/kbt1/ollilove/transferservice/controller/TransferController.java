@@ -25,7 +25,6 @@ public class TransferController {
     @Operation(summary = "영상+송금 보내기")
     @PostMapping(value = "/new", consumes = "multipart/form-data")
     public ResponseEntity<ResultDTO> createTransfer(TransferRequestDTO transferRequestDTO) {
-
         //송금보내기
         if (transferRequestDTO.getTransferId() == -1 || !transferRequestDTO.getVideo().isEmpty()) {
             return ResponseEntity.ok(transferService.createTransfer(transferRequestDTO));
