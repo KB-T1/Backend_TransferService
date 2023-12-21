@@ -3,6 +3,11 @@ server:
   servlet:
     context-path: ${SERVLET_CONTEXT_PATH:/}
 
+    multipart:
+      max-file-size: 30MB
+      max-request-size: 30MB
+
+
 spring:
   application:
     name: Backend_TransferService
@@ -36,3 +41,5 @@ upload:
 
 api-url:
   user: http://kbt1-ollilove-user-api.165.192.105.60.nip.io/api
+
+
