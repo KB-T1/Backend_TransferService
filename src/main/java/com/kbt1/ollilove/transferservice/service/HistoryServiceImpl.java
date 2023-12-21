@@ -46,7 +46,6 @@ public class HistoryServiceImpl implements HistoryService {
     @Override
     @Transactional
     public ResultDTO<List<HistoryResponseDTO>> getHistoryListByUserIdWithTargetId(Long userId, Long targetUserId) {
-        List<HistoryResponseDTO> historyFinalList = getHistoryList(userId);
         List<HistoryResponseDTO> historyResDTOList = getHistoryListByUserIdAndCount(userId).getData();
         List<HistoryResponseDTO> filteredHistoryDTOs = historyResDTOList
                 .stream()
