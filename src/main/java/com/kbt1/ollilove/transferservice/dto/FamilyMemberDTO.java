@@ -8,8 +8,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class FamilyMemberDTO {
-    private Long id;
-    private String name;
-    private String nickname;
-    private int familyType;
+    private Long userId;
+    private String userName;
+    private String nickName;
+    private String profile;
 }

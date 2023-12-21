@@ -2,19 +2,16 @@ package com.kbt1.ollilove.transferservice.service;
 
 import com.kbt1.ollilove.transferservice.domain.History;
 import com.kbt1.ollilove.transferservice.domain.Transfer;
-import com.kbt1.ollilove.transferservice.dto.FamilyMemberDTO;
-import com.kbt1.ollilove.transferservice.dto.HistoryDTO;
-import com.kbt1.ollilove.transferservice.dto.HistoryResponseDTO;
-import com.kbt1.ollilove.transferservice.dto.ResultDTO;
+import com.kbt1.ollilove.transferservice.dto.*;
 import com.kbt1.ollilove.transferservice.repository.HistoryRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -22,16 +19,17 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class HistoryServiceImpl implements HistoryService {
     private final HistoryRepository historyRepository;
+    @Value("${api-url.user}")
     private String USER_API_BASE_URL;
 
     //마음 내역 보기
     @Override
     @Transactional
     public ResultDTO<List<HistoryResponseDTO>> getHistoryListByUserIdAndCount(Long userId) {
-        List<HistoryResponseDTO> historyResDTOList = addAmountAtTransferHistory(getHistoryListByUserID(userId));
+        List<HistoryResponseDTO> historyFinalList = getHistoryList(userId);
         return ResultDTO.<List<HistoryResponseDTO>>builder()
                 .success(true)
-                .data(historyResDTOList)
+                .data(historyFinalList)
                 .build();
     }
 
@@ -39,23 +37,15 @@ public class HistoryServiceImpl implements HistoryService {
     @Override
     @Transactional
     public ResultDTO<List<HistoryResponseDTO>> getHistoryListByUserIdAndCount(Long userId, Long count) {
-        List<HistoryResponseDTO> historyResDTOList = addAmountAtTransferHistory(getHistoryListByUserID(userId));
-        if (count > historyResDTOList.size()) {
-            return ResultDTO.<List<HistoryResponseDTO>>builder()
-                    .success(true)
-                    .data(historyResDTOList)
-                    .build();
-        }
-        return ResultDTO.<List<HistoryResponseDTO>>builder()
-                .success(true)
-                .data(historyResDTOList.subList(0, count.intValue()))
-                .build();
+        List<HistoryResponseDTO> historyFinalList = getHistoryList(userId);
+        return getListResultDTO(count, historyFinalList);
     }
 
     //userID 와 targetUserID간 마음 내역 보기
     @Override
     @Transactional
     public ResultDTO<List<HistoryResponseDTO>> getHistoryListByUserIdWithTargetId(Long userId, Long targetUserId) {
+        List<HistoryResponseDTO> historyFinalList = getHistoryList(userId);
         List<HistoryResponseDTO> historyResDTOList = getHistoryListByUserIdAndCount(userId).getData();
         List<HistoryResponseDTO> filteredHistoryDTOs = historyResDTOList
                 .stream()
@@ -76,6 +66,11 @@ public class HistoryServiceImpl implements HistoryService {
                 .stream()
                 .filter(historyDTO -> historyDTO.getSenderId().equals(targetUserId) || historyDTO.getReceiverId().equals(targetUserId))
                 .collect(Collectors.toList());
+        return getListResultDTO(count, filteredHistoryDTOs);
+    }
+
+    //개수에 알맞게 ResultDTO 수정
+    private ResultDTO<List<HistoryResponseDTO>> getListResultDTO(Long count, List<HistoryResponseDTO> filteredHistoryDTOs) {
         if (count > filteredHistoryDTOs.size()) {
             return ResultDTO.<List<HistoryResponseDTO>>builder()
                     .success(true)
@@ -87,6 +82,7 @@ public class HistoryServiceImpl implements HistoryService {
                 .data(filteredHistoryDTOs.subList(0, count.intValue()))
                 .build();
     }
+
     //히스토리 기록하기
     @Transactional
     public History saveHistoryRecord (HistoryDTO historyDTO, Transfer transfer) {
@@ -111,14 +107,15 @@ public class HistoryServiceImpl implements HistoryService {
         List<HistoryResponseDTO> historyResDTOList = new ArrayList<>();
 
         for (History history : histories) {
-            HistoryResponseDTO historyResDTO = new HistoryResponseDTO(
-                    history.getHistoryId(),
-                    history.getSenderId(),
-                    history.getReceiverId(),
-                    history.getVideoUrl(),
-                    history.getIsReply(),
-                    history.getRegDate(), 0L
-            );
+            HistoryResponseDTO historyResDTO = HistoryResponseDTO.builder()
+                    .historyId(history.getHistoryId())
+                    .senderId(history.getSenderId())
+                    .receiverId(history.getReceiverId())
+                    .videoUrl(history.getVideoUrl())
+                    .isReply(history.getIsReply())
+                    .createdAt(history.getRegDate())
+                    .amount(0L)
+                    .build();
             if (!history.getIsReply()) {
                 Long amount = history.getTransferId().getAmount();
                 historyResDTO.setAmount(amount);
@@ -128,15 +125,41 @@ public class HistoryServiceImpl implements HistoryService {
         return historyResDTOList;
     }
 
-    //유저 서비스 -> 가족 정보 가져오기
-    private HashMap<Long, FamilyMemberDTO> fetchFamilyInfoByUserID (Long userId) {
-        RestTemplate restTemplate = new RestTemplate();
+    private List<HistoryResponseDTO> addFamilyInfoAtTransferHistory(List<HistoryResponseDTO> historyResList, Long userId) {
+        LinkedHashMap familyMemberResponse = fetchFamilyInfoByUserID(userId);
+        if (familyMemberResponse.get("familyMember") != null) {
+            List<LinkedHashMap> familyMemberList = (List) familyMemberResponse.get("familyMember");
+            Map<Long, Object> familyMap = new HashMap<>();
+            for (int i = 0; i < familyMemberList.size(); i++) {
+                familyMap.put(Long.valueOf((int) familyMemberList.get(i).get("userId")), familyMemberList.get(i));
+            }
+            for (HistoryResponseDTO historyRes : historyResList) {
+                LinkedHashMap senderInfo = (LinkedHashMap) familyMap.get(historyRes.getSenderId());
+                LinkedHashMap receiverInfo = (LinkedHashMap) familyMap.get(historyRes.getReceiverId());
+                historyRes.setSenderName((String) senderInfo.get("userName"));
+                historyRes.setSenderNickName((String) senderInfo.get("nickName"));
+                historyRes.setSenderProfile((String) senderInfo.get("profile"));
+                historyRes.setReceiverName((String) receiverInfo.get("userName"));
+                historyRes.setReceiverNickName((String) receiverInfo.get("receiverName"));
+                historyRes.setReceiverProfile((String) receiverInfo.get("profile"));
+            }
+        }
+        return historyResList;
+    };
 
-        USER_API_BASE_URL = "";
-        FamilyMemberDTO result = restTemplate.getForObject(USER_API_BASE_URL, FamilyMemberDTO.class);
-        HashMap<Long, FamilyMemberDTO> familyMap = new HashMap<Long, FamilyMemberDTO>();
-        return familyMap;
+    //유저 서비스 -> 가족 정보 가져오기
+    private LinkedHashMap fetchFamilyInfoByUserID (Long userId) {
+        RestTemplate restTemplate = new RestTemplate();
+        UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(USER_API_BASE_URL+ "/family/user/" + userId);
+        ResultDTO result = restTemplate.getForObject(builder.toUriString(), ResultDTO.class);
+        return (LinkedHashMap) result.getData();
     }
 
+    //히스토리에 가족 송금 정보 붙혀서 가져오기
+    private List<HistoryResponseDTO> getHistoryList (Long userId) {
+        List<HistoryResponseDTO> historyResDTOList = addAmountAtTransferHistory(getHistoryListByUserID(userId));
+        List<HistoryResponseDTO> historyFinalList = addFamilyInfoAtTransferHistory(historyResDTOList, userId);
+        return historyFinalList;
+    }
 
 }
