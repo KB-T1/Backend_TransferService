@@ -48,7 +48,11 @@ public class TransferServiceImpl implements TransferService {
     @Transactional
     public ResultDTO<History> replyWithVideo(TransferRequestDTO transferRequestDTO) {
         //History에 저장
-        History history = historyService.saveHistoryRecord(getTransferById(transferRequestDTO.getTransferId()), true, saveVideo(transferRequestDTO));
+        Transfer transfer = getTransferById(transferRequestDTO.getTransferId());
+        Long temp = transfer.getSenderId();
+        transfer.setSenderId(transfer.getReceiverId());
+        transfer.setReceiverId(temp);
+        History history = historyService.saveHistoryRecord(transfer, true, saveVideo(transferRequestDTO));
 
         return ResultDTO.<History>builder()
                 .success(true)
