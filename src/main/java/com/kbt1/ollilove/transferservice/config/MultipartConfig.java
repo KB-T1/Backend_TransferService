@@ -12,10 +12,10 @@ import org.springframework.web.multipart.support.StandardServletMultipartResolve
 @Configuration
 public class MultipartConfig {
 
-    @Value("${file.multipart.maxUploadSize:30}")
+    @Value("${file.multipart.maxUploadSize:100}")
     private long maxUploadSize;
 
-    @Value("${file.multipart.maxUploadSizePerFile:30}")
+    @Value("${file.multipart.maxUploadSizePerFile:100}")
     private long maxUploadSizePerFile;
 
     @Bean
