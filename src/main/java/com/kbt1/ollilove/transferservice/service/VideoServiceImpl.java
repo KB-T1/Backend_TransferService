@@ -22,9 +22,8 @@ public class VideoServiceImpl implements VideoService{
         String uniqueAddress = generateUniqueAddress(videoRequestDTO.getSenderId(), videoRequestDTO.getReceiverId());
         // 저장될 파일 경로
         String filePath = uploadDir + File.separator + uniqueAddress;
-
+        String publicFilePath = "/media/" + uniqueAddress;
         //파일명 제작
-
         File directory = new File(filePath);
         if (!directory.exists()) {
             boolean success = directory.mkdirs();
@@ -56,7 +55,7 @@ public class VideoServiceImpl implements VideoService{
             return "Error uploading video.";
         }
 
-        return filePath+fileName; // 또는 DB에 저장할 경우 저장된 주소를 반환
+        return publicFilePath+fileName; // 또는 DB에 저장할 경우 저장된 주소를 반환
     }
 
     private String generateUniqueAddress(Long sender, Long receiver) {
