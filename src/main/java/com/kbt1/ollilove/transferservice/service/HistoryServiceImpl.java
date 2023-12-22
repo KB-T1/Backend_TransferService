@@ -139,10 +139,10 @@ public class HistoryServiceImpl implements HistoryService {
                 LinkedHashMap senderInfo = (LinkedHashMap) familyMap.get(historyRes.getSenderId());
                 LinkedHashMap receiverInfo = (LinkedHashMap) familyMap.get(historyRes.getReceiverId());
                 historyRes.setSenderName((String) senderInfo.get("userName"));
-                historyRes.setSenderNickName((String) senderInfo.get("nickName"));
+                historyRes.setSenderNickName((String) senderInfo.get("nickname"));
                 historyRes.setSenderProfile((String) senderInfo.get("profile"));
                 historyRes.setReceiverName((String) receiverInfo.get("userName"));
-                historyRes.setReceiverNickName((String) receiverInfo.get("receiverName"));
+                historyRes.setReceiverNickName((String) receiverInfo.get("nickname"));
                 historyRes.setReceiverProfile((String) receiverInfo.get("profile"));
             }
         }
